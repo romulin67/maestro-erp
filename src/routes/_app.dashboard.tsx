@@ -31,7 +31,13 @@ const KPI = [
   { label: "Conversão", value: pct(KPIS.taxaConversao), delta: "+2,3pp", icon: Activity, tint: "from-success/25 to-success/0" },
 ];
 
-const PIE_COLORS = ["var(--brand-purple)", "var(--brand-orange)", "var(--chart-3)", "var(--chart-4)", "var(--chart-5)"];
+const PIE_COLORS = [
+  "oklch(0.44 0.24 305)", // brand purple
+  "oklch(0.72 0.2 45)",   // brand orange
+  "oklch(0.6 0.18 260)",
+  "oklch(0.62 0.16 155)",
+  "oklch(0.75 0.16 75)",
+];
 
 function Dashboard() {
   const metaPct = KPIS.vgvMes / KPIS.vgvMeta;
