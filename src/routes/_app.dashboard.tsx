@@ -115,7 +115,7 @@ function Dashboard() {
   useEffect(() => {
     let alive = true;
     setLoading(true);
-    fetchPainel({ data: { papel: user.papel, corretor: isCorr ? user.nome : "" } })
+    fetchPainel({ papel: user.papel, corretor: isCorr ? user.nome : "" })
       .then((d) => alive && setPainel(d))
       .catch(() => alive && setPainel(null))
       .finally(() => alive && setLoading(false));
