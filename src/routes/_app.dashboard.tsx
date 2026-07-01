@@ -17,6 +17,7 @@ import {
 } from "recharts";
 import { ArrowUpRight, TrendingUp, Wallet, Briefcase, Users, Activity } from "lucide-react";
 import { PageHeader } from "@/components/app-shell";
+import { useCurrentUser } from "@/lib/session";
 import { KPIS, CAIXA_TREND, ORIGENS, CORRETORES, VENDAS, brl, pct } from "@/lib/mock";
 
 export const Route = createFileRoute("/_app/dashboard")({
@@ -40,13 +41,17 @@ const PIE_COLORS = [
 ];
 
 function Dashboard() {
+  const user = useCurrentUser();
+  const hora = new Date().getHours();
+  const saudacao = hora < 12 ? "Bom dia" : hora < 18 ? "Boa tarde" : "Boa noite";
+  const primeiroNome = user.nome.split(" ")[0];
   const metaPct = KPIS.vgvMes / KPIS.vgvMeta;
 
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Bom dia, Rômulo."
-        subtitle="Junho/2026 · 3 vendas fechadas · pipeline em ritmo acima da meta."
+        title={`${saudacao}, ${primeiroNome}.`}
+        subtitle="Junho/2026 · pipeline em ritmo acima da meta."
         actions={
           <Link
             to="/negocios"
