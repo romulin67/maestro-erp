@@ -15,6 +15,7 @@ import { Route as AppProdutosRouteImport } from './routes/_app.produtos'
 import { Route as AppNegociosRouteImport } from './routes/_app.negocios'
 import { Route as AppFinanceiroRouteImport } from './routes/_app.financeiro'
 import { Route as AppDashboardRouteImport } from './routes/_app.dashboard'
+import { Route as AppCrmRouteImport } from './routes/_app.crm'
 
 const AppRoute = AppRouteImport.update({
   id: '/_app',
@@ -45,9 +46,15 @@ const AppDashboardRoute = AppDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AppRoute,
 } as any)
+const AppCrmRoute = AppCrmRouteImport.update({
+  id: '/crm',
+  path: '/crm',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/crm': typeof AppCrmRoute
   '/dashboard': typeof AppDashboardRoute
   '/financeiro': typeof AppFinanceiroRoute
   '/negocios': typeof AppNegociosRoute
@@ -55,6 +62,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/crm': typeof AppCrmRoute
   '/dashboard': typeof AppDashboardRoute
   '/financeiro': typeof AppFinanceiroRoute
   '/negocios': typeof AppNegociosRoute
@@ -64,6 +72,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_app': typeof AppRouteWithChildren
+  '/_app/crm': typeof AppCrmRoute
   '/_app/dashboard': typeof AppDashboardRoute
   '/_app/financeiro': typeof AppFinanceiroRoute
   '/_app/negocios': typeof AppNegociosRoute
@@ -71,13 +80,20 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/dashboard' | '/financeiro' | '/negocios' | '/produtos'
+  fullPaths:
+    | '/'
+    | '/crm'
+    | '/dashboard'
+    | '/financeiro'
+    | '/negocios'
+    | '/produtos'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/dashboard' | '/financeiro' | '/negocios' | '/produtos'
+  to: '/' | '/crm' | '/dashboard' | '/financeiro' | '/negocios' | '/produtos'
   id:
     | '__root__'
     | '/'
     | '/_app'
+    | '/_app/crm'
     | '/_app/dashboard'
     | '/_app/financeiro'
     | '/_app/negocios'
@@ -133,10 +149,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppDashboardRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/crm': {
+      id: '/_app/crm'
+      path: '/crm'
+      fullPath: '/crm'
+      preLoaderRoute: typeof AppCrmRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
 interface AppRouteChildren {
+  AppCrmRoute: typeof AppCrmRoute
   AppDashboardRoute: typeof AppDashboardRoute
   AppFinanceiroRoute: typeof AppFinanceiroRoute
   AppNegociosRoute: typeof AppNegociosRoute
@@ -144,6 +168,7 @@ interface AppRouteChildren {
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppCrmRoute: AppCrmRoute,
   AppDashboardRoute: AppDashboardRoute,
   AppFinanceiroRoute: AppFinanceiroRoute,
   AppNegociosRoute: AppNegociosRoute,
