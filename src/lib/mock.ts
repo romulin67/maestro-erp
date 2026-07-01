@@ -1,4 +1,5 @@
-// Mock data para o MVP navegável do ApeCerto.
+// Mock data para o MVP navegável do ApeCerto — dados alinhados à operação real.
+// Time, empreendimentos (Moema/Campo Belo), 13 etapas do funil e vocabulário de status reais.
 // Substituir por chamadas Supabase quando o backend for ativado.
 
 export const KPIS = {
@@ -12,19 +13,20 @@ export const KPIS = {
   slaResposta: 0.72,
 };
 
+// Status oficial da VENDAS: Pendente | Concluído | Pago | Distrato (não mexer — a DRE depende disso).
 export const VENDAS = [
-  { id: "V-2601", mes: "2026-06", empreendimento: "Edifício Pavão", bairro: "Moema", unidade: "142", cliente: "Marina Alvarenga", corretor: "Rafael Souza", vgv: 890_000, corretorRS: 26_700, apecerto: 8_900, romulo: 2_670, status: "Fechado", origem: "Meta Ads · Moema Prime" },
-  { id: "V-2602", mes: "2026-06", empreendimento: "Residencial Ipê", bairro: "Vila Mariana", unidade: "84", cliente: "Bruno Kato", corretor: "Camila Reis", vgv: 620_000, corretorRS: 18_600, apecerto: 6_200, romulo: 1_860, status: "Em cartório", origem: "Indicação · Rafael S." },
-  { id: "V-2603", mes: "2026-06", empreendimento: "Jardins Alto", bairro: "Jardins", unidade: "1201", cliente: "Sofia Menezes", corretor: "Rafael Souza", vgv: 1_450_000, corretorRS: 43_500, apecerto: 14_500, romulo: 4_350, status: "Fechado", origem: "Instagram Orgânico" },
-  { id: "V-2604", mes: "2026-05", empreendimento: "Residencial Ipê", bairro: "Vila Mariana", unidade: "62", cliente: "Diego Prado", corretor: "Lucas Mano", vgv: 540_000, corretorRS: 16_200, apecerto: 5_400, romulo: 1_620, status: "Fechado", origem: "Meta Ads · Ipê Retarget" },
-  { id: "V-2605", mes: "2026-05", empreendimento: "Edifício Pavão", bairro: "Moema", unidade: "91", cliente: "Ana Beatriz", corretor: "Camila Reis", vgv: 780_000, corretorRS: 23_400, apecerto: 7_800, romulo: 2_340, status: "Distrato", origem: "Portal ZAP" },
+  { id: "V-2601", mes: "2026-06", empreendimento: "Claris Moema", bairro: "Moema", unidade: "43", cliente: "João Silva", corretor: "Claudia", vgv: 685_000, corretorRS: 13_700, apecerto: 6_850, romulo: 2_055, status: "Pago", origem: "Meta · Studio 400-700k" },
+  { id: "V-2602", mes: "2026-06", empreendimento: "Jazz Moema", bairro: "Moema", unidade: "118", cliente: "Marina Costa", corretor: "Fabiano", vgv: 520_000, corretorRS: 9_100, apecerto: 5_200, romulo: 1_560, status: "Pendente", origem: "Meta · 1 dorm Campo Belo" },
+  { id: "V-2603", mes: "2026-06", empreendimento: "Autoral Moema", bairro: "Moema", unidade: "72", cliente: "Sofia Menezes", corretor: "Tica", vgv: 610_000, corretorRS: 12_200, apecerto: 6_100, romulo: 1_830, status: "Concluído", origem: "Instagram Orgânico" },
+  { id: "V-2604", mes: "2026-05", empreendimento: "Terrare", bairro: "Campo Belo", unidade: "62", cliente: "Diego Prado", corretor: "Elizangela", vgv: 540_000, corretorRS: 10_800, apecerto: 5_400, romulo: 1_620, status: "Pago", origem: "Meta · Studio Moema" },
+  { id: "V-2605", mes: "2026-05", empreendimento: "Composite Moema", bairro: "Moema", unidade: "91", cliente: "Ana Beatriz", corretor: "Edrisia", vgv: 470_000, corretorRS: 8_225, apecerto: 4_700, romulo: 1_410, status: "Distrato", origem: "Portal ZAP" },
 ];
 
 export const CAIXA = [
-  { data: "2026-06-28", descricao: "Comissão Pavão 142", categoria: "Comissão recebida", entrada: 26_700, saida: 0 },
+  { data: "2026-06-28", descricao: "Comissão Claris 43", categoria: "Comissão recebida", entrada: 13_700, saida: 0 },
   { data: "2026-06-27", descricao: "Pró-labore Samuel", categoria: "Retirada sócio", entrada: 0, saida: 18_000 },
   { data: "2026-06-25", descricao: "Meta Ads · Junho", categoria: "Marketing", entrada: 0, saida: 12_400 },
-  { data: "2026-06-22", descricao: "Comissão Ipê 84", categoria: "Comissão recebida", entrada: 18_600, saida: 0 },
+  { data: "2026-06-22", descricao: "Comissão Autoral 72", categoria: "Comissão recebida", entrada: 12_200, saida: 0 },
   { data: "2026-06-20", descricao: "DataCrazy · mensalidade", categoria: "SaaS", entrada: 0, saida: 1_890 },
   { data: "2026-06-18", descricao: "Aporte sócio", categoria: "Aporte", entrada: 40_000, saida: 0 },
   { data: "2026-06-15", descricao: "Aluguel escritório", categoria: "Fixo", entrada: 0, saida: 8_500 },
@@ -39,66 +41,91 @@ export const CAIXA_TREND = [
   { mes: "Jun", entrada: 142_300, saida: 89_600 },
 ];
 
-export const NEGOCIOS = [
-  { id: "N-101", cliente: "Marina Alvarenga", empreendimento: "Edifício Pavão", unidade: "142", stage: "Fechado", corretor: "Rafael S.", vgv: 890_000, atualizado: "há 2h", origem: "Meta Ads" },
-  { id: "N-102", cliente: "Rodrigo Peixoto", empreendimento: "Jardins Alto", unidade: "804", stage: "Proposta", corretor: "Camila R.", vgv: 1_150_000, atualizado: "há 5h", origem: "Portal ZAP" },
-  { id: "N-103", cliente: "Helena Yara", empreendimento: "Residencial Ipê", unidade: "72", stage: "Visita", corretor: "Lucas M.", vgv: 590_000, atualizado: "há 1d", origem: "Instagram" },
-  { id: "N-104", cliente: "Tiago Bertoni", empreendimento: "Edifício Pavão", unidade: "38", stage: "Qualificação", corretor: "Rafael S.", vgv: 720_000, atualizado: "há 3h", origem: "Meta Ads" },
-  { id: "N-105", cliente: "Nina Coelho", empreendimento: "Jardins Alto", unidade: "1502", stage: "Novo", corretor: "—", vgv: 1_720_000, atualizado: "agora", origem: "Indicação" },
-  { id: "N-106", cliente: "Bruno Kato", empreendimento: "Residencial Ipê", unidade: "84", stage: "Em cartório", corretor: "Camila R.", vgv: 620_000, atualizado: "há 1d", origem: "Indicação" },
-  { id: "N-107", cliente: "Larissa Prado", empreendimento: "Jardins Alto", unidade: "902", stage: "Proposta", corretor: "Lucas M.", vgv: 1_320_000, atualizado: "há 6h", origem: "Portal VivaReal" },
-  { id: "N-108", cliente: "Otávio Muniz", empreendimento: "Edifício Pavão", unidade: "77", stage: "Visita", corretor: "Rafael S.", vgv: 810_000, atualizado: "há 4h", origem: "Meta Ads" },
-];
-
-export const STAGES = ["Novo", "Qualificação", "Visita", "Proposta", "Em cartório", "Fechado"] as const;
+// Funil comercial oficial (13 etapas — spec do Samuel).
+export const STAGES = [
+  "Lead Novo",
+  "Primeiro Contato",
+  "Em Atendimento",
+  "Qualificação",
+  "Visita Agendada",
+  "Visita Realizada",
+  "Negociação",
+  "Proposta",
+  "Reserva",
+  "Contrato",
+  "Financiamento",
+  "Venda",
+  "Pós-venda",
+] as const;
 export type Stage = (typeof STAGES)[number];
 
-export const PRODUTOS = [
-  { id: "P-01", nome: "Edifício Pavão · 142", bairro: "Moema", tipo: "3 dorm · 92m²", preco: 890_000, status: "Pronto", tags: ["Mobiliado", "Metrô 5min"], destaque: true },
-  { id: "P-02", nome: "Residencial Ipê · 84", bairro: "Vila Mariana", tipo: "2 dorm · 68m²", preco: 620_000, status: "Pronto", tags: ["Varanda", "Pet"], destaque: false },
-  { id: "P-03", nome: "Jardins Alto · 1201", bairro: "Jardins", tipo: "4 dorm · 180m²", preco: 1_450_000, status: "Lançamento", tags: ["Cobertura", "Vista"], destaque: true },
-  { id: "P-04", nome: "Edifício Pavão · 38", bairro: "Moema", tipo: "2 dorm · 62m²", preco: 720_000, status: "Pronto", tags: ["Reformado"], destaque: false },
-  { id: "P-05", nome: "Jardins Alto · 804", bairro: "Jardins", tipo: "3 dorm · 132m²", preco: 1_150_000, status: "Lançamento", tags: ["Home office"], destaque: false },
-  { id: "P-06", nome: "Residencial Ipê · 62", bairro: "Vila Mariana", tipo: "2 dorm · 68m²", preco: 540_000, status: "Vendido", tags: [], destaque: false },
+// PIPELINE — negócios em andamento no funil (isto alimenta a aba CRM). Cada card ligado ao corretor da instância.
+export const PIPELINE = [
+  { id: "N-101", cliente: "João Mendes", empreendimento: "Claris Moema", unidade: "—", stage: "Lead Novo", corretor: "Claudia", vgv: 480_000, atualizado: "agora", origem: "Meta · Studio" },
+  { id: "N-102", cliente: "Marina Costa", empreendimento: "Jazz Moema", unidade: "118", stage: "Primeiro Contato", corretor: "Fabiano", vgv: 520_000, atualizado: "há 2h", origem: "Meta · 1 dorm" },
+  { id: "N-103", cliente: "Rafael Lima", empreendimento: "Autoral Moema", unidade: "—", stage: "Em Atendimento", corretor: "Tica", vgv: 610_000, atualizado: "há 3h", origem: "Instagram" },
+  { id: "N-104", cliente: "Beatriz Souza", empreendimento: "Terrare", unidade: "—", stage: "Qualificação", corretor: "Claudia", vgv: 545_000, atualizado: "há 1d", origem: "Meta · Studio" },
+  { id: "N-105", cliente: "Pedro Alves", empreendimento: "Composite Moema", unidade: "204", stage: "Visita Agendada", corretor: "Elizangela", vgv: 470_000, atualizado: "há 5h", origem: "Indicação" },
+  { id: "N-106", cliente: "Camila Rocha", empreendimento: "Claris Moema", unidade: "51", stage: "Visita Realizada", corretor: "Fabiano", vgv: 495_000, atualizado: "há 6h", origem: "Meta · Studio" },
+  { id: "N-107", cliente: "Lucas Pereira", empreendimento: "Jazz Moema", unidade: "77", stage: "Negociação", corretor: "Tica", vgv: 530_000, atualizado: "há 4h", origem: "Meta · 1 dorm" },
+  { id: "N-108", cliente: "Aline Dias", empreendimento: "Autoral Moema", unidade: "63", stage: "Proposta", corretor: "Claudia", vgv: 610_000, atualizado: "há 1h", origem: "Instagram" },
+  { id: "N-109", cliente: "Bruno Carvalho", empreendimento: "Terrare", unidade: "88", stage: "Reserva", corretor: "Edrisia", vgv: 540_000, atualizado: "há 2h", origem: "Meta · Studio" },
+  { id: "N-110", cliente: "Fernanda Melo", empreendimento: "Claris Moema", unidade: "403", stage: "Contrato", corretor: "Fabiano", vgv: 685_000, atualizado: "há 1d", origem: "Meta · Studio" },
+  { id: "N-111", cliente: "Gustavo Nunes", empreendimento: "Terrare", unidade: "112", stage: "Financiamento", corretor: "Elizangela", vgv: 505_000, atualizado: "há 2d", origem: "Indicação" },
+  { id: "N-112", cliente: "Patrícia Gomes", empreendimento: "Composite Moema", unidade: "91", stage: "Venda", corretor: "Tica", vgv: 470_000, atualizado: "há 3d", origem: "Meta · Studio" },
+  { id: "N-113", cliente: "Diego Ferreira", empreendimento: "Jazz Moema", unidade: "120", stage: "Pós-venda", corretor: "Claudia", vgv: 520_000, atualizado: "há 5d", origem: "Meta · 1 dorm" },
 ];
 
+// Catálogo (tabelão). Status: Lançamento | Em obras | Pronto | Vendido.
+export const PRODUTOS = [
+  { id: "P-01", nome: "Claris Moema · 43", bairro: "Moema", tipo: "Studio · 28m²", preco: 685_000, status: "Em obras", tags: ["Metrô 5min", "Studio"], destaque: true },
+  { id: "P-02", nome: "Jazz Moema · 118", bairro: "Moema", tipo: "1 dorm · 38m²", preco: 520_000, status: "Lançamento", tags: ["Varanda", "Pet"], destaque: false },
+  { id: "P-03", nome: "Autoral Moema · 72", bairro: "Moema", tipo: "1 dorm · 42m²", preco: 610_000, status: "Em obras", tags: ["Lazer completo"], destaque: true },
+  { id: "P-04", nome: "Terrare · 62", bairro: "Campo Belo", tipo: "Studio · 30m²", preco: 540_000, status: "Lançamento", tags: ["Home office"], destaque: false },
+  { id: "P-05", nome: "Composite Moema · 204", bairro: "Moema", tipo: "1 dorm · 40m²", preco: 470_000, status: "Pronto", tags: ["Pronto p/ morar"], destaque: false },
+  { id: "P-06", nome: "Terrare · 88", bairro: "Campo Belo", tipo: "Studio · 29m²", preco: 505_000, status: "Vendido", tags: [], destaque: false },
+];
+
+// Base de clientes (CRM). Tags: Quente | Morno | Novo | Comprador.
 export const CLIENTES = [
-  { id: "C-01", nome: "Marina Alvarenga", tel: "+55 11 9 8123-4501", tag: "Comprador", corretor: "Rafael S.", unidade: "Pavão 142", ultimo: "há 2h" },
-  { id: "C-02", nome: "Rodrigo Peixoto", tel: "+55 11 9 8123-4502", tag: "Quente", corretor: "Camila R.", unidade: "Jardins 804", ultimo: "há 5h" },
-  { id: "C-03", nome: "Helena Yara", tel: "+55 11 9 8123-4503", tag: "Morno", corretor: "Lucas M.", unidade: "Ipê 72", ultimo: "há 1d" },
-  { id: "C-04", nome: "Tiago Bertoni", tel: "+55 11 9 8123-4504", tag: "Quente", corretor: "Rafael S.", unidade: "Pavão 38", ultimo: "há 3h" },
-  { id: "C-05", nome: "Nina Coelho", tel: "+55 11 9 8123-4505", tag: "Novo", corretor: "—", unidade: "Jardins 1502", ultimo: "agora" },
-  { id: "C-06", nome: "Larissa Prado", tel: "+55 11 9 8123-4506", tag: "Quente", corretor: "Lucas M.", unidade: "Jardins 902", ultimo: "há 6h" },
+  { id: "C-01", nome: "João Silva", tel: "+55 11 9 8123-4501", tag: "Comprador", corretor: "Claudia", unidade: "Claris 43", ultimo: "há 2h" },
+  { id: "C-02", nome: "Marina Costa", tel: "+55 11 9 8123-4502", tag: "Quente", corretor: "Fabiano", unidade: "Jazz 118", ultimo: "há 5h" },
+  { id: "C-03", nome: "Rafael Lima", tel: "+55 11 9 8123-4503", tag: "Morno", corretor: "Tica", unidade: "Autoral —", ultimo: "há 1d" },
+  { id: "C-04", nome: "Beatriz Souza", tel: "+55 11 9 8123-4504", tag: "Quente", corretor: "Claudia", unidade: "Terrare —", ultimo: "há 3h" },
+  { id: "C-05", nome: "Pedro Alves", tel: "+55 11 9 8123-4505", tag: "Novo", corretor: "Elizangela", unidade: "Composite 204", ultimo: "agora" },
+  { id: "C-06", nome: "Aline Dias", tel: "+55 11 9 8123-4506", tag: "Quente", corretor: "Claudia", unidade: "Autoral 63", ultimo: "há 1h" },
 ];
 
 export const CONVERSAS = [
-  { id: "K-1", cliente: "Marina Alvarenga", ultima: "Confirmado! Vejo você às 15h na portaria.", quando: "10:24", naoLidas: 0, canal: "WhatsApp", corretor: "Rafael S.", online: true },
-  { id: "K-2", cliente: "Rodrigo Peixoto", ultima: "Consegue reduzir 3% no valor da unidade?", quando: "09:58", naoLidas: 2, canal: "WhatsApp", corretor: "Camila R.", online: true },
-  { id: "K-3", cliente: "Helena Yara", ultima: "Vou ver com meu marido e retorno.", quando: "ontem", naoLidas: 0, canal: "WhatsApp", corretor: "Lucas M.", online: false },
-  { id: "K-4", cliente: "Tiago Bertoni", ultima: "Perfeito, aguardo a proposta.", quando: "08:41", naoLidas: 1, canal: "Instagram", corretor: "Rafael S.", online: false },
-  { id: "K-5", cliente: "Nina Coelho", ultima: "Recém-chegada do Meta Ads — precisa qualificar.", quando: "agora", naoLidas: 3, canal: "WhatsApp", corretor: "—", online: true },
+  { id: "K-1", cliente: "João Silva", ultima: "Confirmado! Vejo você às 15h na portaria.", quando: "10:24", naoLidas: 0, canal: "WhatsApp", corretor: "Claudia", online: true },
+  { id: "K-2", cliente: "Marina Costa", ultima: "Consegue reduzir 3% no valor da unidade?", quando: "09:58", naoLidas: 2, canal: "WhatsApp", corretor: "Fabiano", online: true },
+  { id: "K-3", cliente: "Rafael Lima", ultima: "Vou ver com minha esposa e retorno.", quando: "ontem", naoLidas: 0, canal: "WhatsApp", corretor: "Tica", online: false },
+  { id: "K-4", cliente: "Beatriz Souza", ultima: "Perfeito, aguardo a proposta.", quando: "08:41", naoLidas: 1, canal: "WhatsApp", corretor: "Claudia", online: false },
+  { id: "K-5", cliente: "Pedro Alves", ultima: "Recém-chegado do Meta Ads — precisa qualificar.", quando: "agora", naoLidas: 3, canal: "WhatsApp", corretor: "Elizangela", online: true },
 ];
 
 export const MENSAGENS = [
-  { de: "cliente", texto: "Oi! Vi o anúncio do apê 142 no Pavão. Ainda está disponível?", quando: "10:12" },
-  { de: "corretor", texto: "Oi Marina! Está sim. Quer agendar uma visita ainda essa semana?", quando: "10:14" },
+  { de: "cliente", texto: "Oi! Vi o anúncio do studio no Claris Moema. Ainda tem disponível?", quando: "10:12" },
+  { de: "corretor", texto: "Oi João! Tem sim. Quer agendar uma visita ainda essa semana?", quando: "10:14" },
   { de: "cliente", texto: "Consigo hoje às 15h?", quando: "10:20" },
   { de: "corretor", texto: "Fechado. Te mando a localização no privado.", quando: "10:22" },
   { de: "cliente", texto: "Confirmado! Vejo você às 15h na portaria.", quando: "10:24" },
 ];
 
 export const CORRETORES = [
-  { nome: "Rafael Souza", vgv: 3_120_000, fechadas: 4, pipeline: 12 },
-  { nome: "Camila Reis", vgv: 2_450_000, fechadas: 3, pipeline: 9 },
-  { nome: "Lucas Mano", vgv: 1_780_000, fechadas: 2, pipeline: 7 },
+  { nome: "Claudia", vgv: 1_845_000, fechadas: 3, pipeline: 12 },
+  { nome: "Fabiano", vgv: 1_690_000, fechadas: 3, pipeline: 11 },
+  { nome: "Tica", vgv: 1_240_000, fechadas: 2, pipeline: 9 },
+  { nome: "Elizangela", vgv: 980_000, fechadas: 2, pipeline: 7 },
+  { nome: "Edrisia", vgv: 640_000, fechadas: 1, pipeline: 5 },
 ];
 
 export const ORIGENS = [
-  { origem: "Meta Ads", leads: 148, fechados: 6, custo: 12_400 },
+  { origem: "Meta · Studio", leads: 148, fechados: 6, custo: 12_400 },
+  { origem: "Meta · 1 dorm", leads: 96, fechados: 4, custo: 8_900 },
   { origem: "Instagram Orgânico", leads: 62, fechados: 3, custo: 0 },
-  { origem: "Portal ZAP", leads: 41, fechados: 2, custo: 3_200 },
   { origem: "Indicação", leads: 22, fechados: 4, custo: 0 },
-  { origem: "Portal VivaReal", leads: 18, fechados: 1, custo: 1_800 },
+  { origem: "Portal ZAP", leads: 18, fechados: 1, custo: 1_800 },
 ];
 
 export const brl = (n: number) =>
