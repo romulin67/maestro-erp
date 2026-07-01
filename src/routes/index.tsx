@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { useState } from "react";
-import { Sparkles, ArrowRight } from "lucide-react";
+import { Sparkles, ArrowRight, Shield, UserRound } from "lucide-react";
+import { USUARIOS, setUser, type Usuario } from "@/lib/session";
 
 export const Route = createFileRoute("/")({
   component: LoginPage,
@@ -9,17 +9,14 @@ export const Route = createFileRoute("/")({
 
 function LoginPage() {
   const navigate = useNavigate();
-  const [pin, setPin] = useState("");
-  const [err, setErr] = useState("");
 
-  function enter(e: React.FormEvent) {
-    e.preventDefault();
-    if (pin.length < 4) {
-      setErr("PIN precisa ter pelo menos 4 dígitos.");
-      return;
-    }
+  function entrar(u: Usuario) {
+    setUser(u.id);
     navigate({ to: "/dashboard" });
   }
+
+  const admins = USUARIOS.filter((u) => u.papel === "admin");
+  const corretores = USUARIOS.filter((u) => u.papel === "corretor");
 
   return (
     <div className="min-h-screen grid md:grid-cols-2">
@@ -67,10 +64,9 @@ function LoginPage() {
         <div className="relative text-xs opacity-75">v2.0 · integrado com DataCrazy e D-API</div>
       </div>
 
-      {/* Right: form */}
+      {/* Right: profile selector */}
       <div className="flex items-center justify-center p-6 md:p-10">
-        <motion.form
-          onSubmit={enter}
+        <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
@@ -86,38 +82,52 @@ function LoginPage() {
             </div>
           </div>
 
-          <h1 className="text-3xl md:text-4xl font-bold tracking-tight">Entre com seu PIN</h1>
-          <p className="text-muted-foreground mt-2">Acesso rápido, sem senha. Peça o seu no time de operações.</p>
+          <h1 className="text-3xl md:text-4xl font-bold tracking-tight">Quem é você?</h1>
+          <p className="text-muted-foreground mt-2">Escolha seu perfil para entrar.</p>
 
-          <div className="mt-8">
-            <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">PIN</label>
-            <input
-              autoFocus
-              inputMode="numeric"
-              maxLength={6}
-              value={pin}
-              onChange={(e) => {
-                setErr("");
-                setPin(e.target.value.replace(/\D/g, ""));
-              }}
-              placeholder="••••"
-              className="mt-2 w-full h-16 text-center text-3xl font-bold tracking-[0.8em] rounded-2xl bg-card border border-border shadow-card focus:outline-none focus:border-primary focus:shadow-glow transition"
-            />
-            {err && <p className="text-destructive text-sm mt-2 font-medium">{err}</p>}
+          <div className="mt-7">
+            <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-2">
+              <Shield className="size-3.5" /> Administração
+            </div>
+            <div className="grid gap-2">
+              {admins.map((u) => (
+                <ProfileButton key={u.id} u={u} onClick={() => entrar(u)} />
+              ))}
+            </div>
           </div>
 
-          <button
-            type="submit"
-            className="mt-6 w-full h-14 rounded-2xl gradient-brand text-white font-bold text-base shadow-glow hover:brightness-110 transition flex items-center justify-center gap-2"
-          >
-            Entrar <ArrowRight className="size-5" />
-          </button>
-
-          <p className="text-xs text-muted-foreground mt-6 text-center">
-            Dica demo: digite qualquer PIN de 4+ dígitos para explorar.
-          </p>
-        </motion.form>
+          <div className="mt-6">
+            <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-2">
+              <UserRound className="size-3.5" /> Corretores
+            </div>
+            <div className="grid gap-2">
+              {corretores.map((u) => (
+                <ProfileButton key={u.id} u={u} onClick={() => entrar(u)} />
+              ))}
+            </div>
+          </div>
+        </motion.div>
       </div>
     </div>
+  );
+}
+
+function ProfileButton({ u, onClick }: { u: Usuario; onClick: () => void }) {
+  return (
+    <button
+      onClick={onClick}
+      className="group flex items-center gap-3 w-full rounded-2xl border border-border bg-card px-4 py-3 text-left shadow-card hover:border-primary hover:shadow-glow transition"
+    >
+      <div className="size-10 rounded-full gradient-brand grid place-items-center text-white text-sm font-bold shrink-0">
+        {u.iniciais}
+      </div>
+      <div className="min-w-0 flex-1">
+        <div className="font-semibold truncate">{u.nome}</div>
+        <div className="text-xs text-muted-foreground truncate">
+          {u.papel === "admin" ? "Admin · acesso total" : `Corretor · ${u.instancia ?? ""}`}
+        </div>
+      </div>
+      <ArrowRight className="size-4 text-muted-foreground group-hover:text-primary transition" />
+    </button>
   );
 }
