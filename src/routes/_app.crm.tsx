@@ -1,107 +1,94 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Phone, MessageCircle, Plus, UserPlus } from "lucide-react";
+import { motion } from "framer-motion";
+import { Filter, Plus } from "lucide-react";
 import { PageHeader } from "@/components/app-shell";
-import { CLIENTES } from "@/lib/mock";
+import { PIPELINE, STAGES, brl } from "@/lib/mock";
 
 export const Route = createFileRoute("/_app/crm")({
   head: () => ({ meta: [{ title: "CRM · ApeCerto" }] }),
   component: CrmPage,
 });
 
-const TAG_TINT: Record<string, string> = {
-  Quente: "bg-destructive/15 text-destructive",
-  Morno: "bg-warning/20 text-warning",
-  Novo: "bg-primary/15 text-primary",
-  Comprador: "bg-success/20 text-success",
+const STAGE_TINT: Record<string, string> = {
+  "Lead Novo": "bg-muted text-muted-foreground",
+  "Primeiro Contato": "bg-muted text-muted-foreground",
+  "Em Atendimento": "bg-chart-3/15 text-chart-3",
+  "Qualificação": "bg-chart-3/15 text-chart-3",
+  "Visita Agendada": "bg-warning/20 text-warning",
+  "Visita Realizada": "bg-warning/20 text-warning",
+  "Negociação": "bg-accent/20 text-accent-foreground",
+  "Proposta": "bg-accent/20 text-accent-foreground",
+  "Reserva": "bg-primary/15 text-primary",
+  "Contrato": "bg-primary/15 text-primary",
+  "Financiamento": "bg-primary/15 text-primary",
+  "Venda": "bg-success/20 text-success",
+  "Pós-venda": "bg-success/20 text-success",
 };
+const tint = (s: string) => STAGE_TINT[s] ?? "bg-muted text-muted-foreground";
 
 function CrmPage() {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="CRM · Clientes"
-        subtitle="Base viva sincronizada com o DataCrazy. Cada cliente ligado à sua unidade e ao seu corretor."
+        title="CRM · Pipeline comercial"
+        subtitle={`${PIPELINE.length} negócios no funil · ${brl(PIPELINE.reduce((s, n) => s + n.vgv, 0))} em VGV potencial · sincroniza com o DataCrazy`}
         actions={
           <>
             <button className="h-10 px-4 rounded-xl border border-border bg-card text-sm font-semibold flex items-center gap-2 hover:bg-muted transition">
-              <UserPlus className="size-4" /> Importar
+              <Filter className="size-4" /> Filtros
             </button>
             <button className="h-10 px-4 rounded-xl gradient-brand text-white text-sm font-semibold flex items-center gap-2 shadow-glow">
-              <Plus className="size-4" /> Novo cliente
+              <Plus className="size-4" /> Novo lead
             </button>
           </>
         }
       />
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {[
-          { l: "Base total", v: "1.284" },
-          { l: "Quentes agora", v: "37" },
-          { l: "Sem toque > 7d", v: "62" },
-          { l: "Novos hoje", v: "8" },
-        ].map((s) => (
-          <div key={s.l} className="rounded-2xl bg-card border border-border p-5 shadow-card">
-            <div className="text-xs uppercase tracking-widest text-muted-foreground font-semibold">{s.l}</div>
-            <div className="font-display text-2xl md:text-3xl font-bold mt-2">{s.v}</div>
-          </div>
-        ))}
-      </div>
-
-      <div className="rounded-2xl bg-card border border-border shadow-card overflow-hidden">
-        <div className="p-6 border-b border-border flex items-center justify-between flex-wrap gap-3">
-          <div>
-            <div className="text-xs uppercase tracking-widest text-muted-foreground font-semibold">Clientes</div>
-            <div className="font-display text-lg font-bold mt-1">{CLIENTES.length} exibidos</div>
-          </div>
-          <div className="flex gap-2">
-            {["Todos", "Quentes", "Novos", "Compradores"].map((t, i) => (
-              <button key={t} className={`px-3 h-8 rounded-full text-xs font-semibold border ${i === 0 ? "bg-primary text-primary-foreground border-primary" : "border-border text-muted-foreground hover:bg-muted"}`}>{t}</button>
-            ))}
-          </div>
-        </div>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="text-xs uppercase tracking-widest text-muted-foreground bg-muted/50">
-                <th className="text-left font-semibold px-6 py-3">Cliente</th>
-                <th className="text-left font-semibold px-6 py-3">Tag</th>
-                <th className="text-left font-semibold px-6 py-3">Unidade vinculada</th>
-                <th className="text-left font-semibold px-6 py-3">Corretor</th>
-                <th className="text-left font-semibold px-6 py-3">Último contato</th>
-                <th className="text-right font-semibold px-6 py-3">Ações</th>
-              </tr>
-            </thead>
-            <tbody>
-              {CLIENTES.map((c) => (
-                <tr key={c.id} className="border-t border-border hover:bg-muted/40 transition">
-                  <td className="px-6 py-3">
-                    <div className="flex items-center gap-3">
-                      <div className="size-9 rounded-full gradient-brand grid place-items-center text-white text-xs font-bold">
-                        {c.nome.split(" ").map((x) => x[0]).slice(0, 2).join("")}
+      <div className="flex gap-3 md:gap-4 overflow-x-auto pb-4">
+        {STAGES.map((stage) => {
+          const items = PIPELINE.filter((n) => n.stage === stage);
+          const total = items.reduce((s, n) => s + n.vgv, 0);
+          return (
+            <div key={stage} className="w-64 shrink-0 rounded-2xl bg-card/60 border border-border p-3 min-h-[420px] flex flex-col">
+              <div className="flex items-center justify-between mb-3">
+                <div>
+                  <div className="text-xs font-bold uppercase tracking-widest text-muted-foreground">{stage}</div>
+                  <div className="text-[11px] text-muted-foreground mt-0.5">{items.length} · {brl(total)}</div>
+                </div>
+                <div className="size-6 rounded-full bg-muted grid place-items-center text-[10px] font-bold">{items.length}</div>
+              </div>
+              <div className="flex-1 space-y-2 overflow-y-auto">
+                {items.map((n, i) => (
+                  <motion.div
+                    key={n.id}
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: i * 0.03 }}
+                    className="rounded-xl bg-card border border-border p-3 shadow-sm hover:shadow-card hover:-translate-y-0.5 transition cursor-pointer"
+                  >
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="min-w-0">
+                        <div className="text-sm font-semibold truncate">{n.cliente}</div>
+                        <div className="text-xs text-muted-foreground truncate">{n.empreendimento} · {n.unidade}</div>
                       </div>
-                      <div>
-                        <div className="font-semibold">{c.nome}</div>
-                        <div className="text-xs text-muted-foreground">{c.tel}</div>
-                      </div>
+                      <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full whitespace-nowrap ${tint(n.stage)}`}>
+                        {n.stage}
+                      </span>
                     </div>
-                  </td>
-                  <td className="px-6 py-3">
-                    <span className={`text-[11px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full ${TAG_TINT[c.tag] ?? "bg-muted text-muted-foreground"}`}>{c.tag}</span>
-                  </td>
-                  <td className="px-6 py-3 font-medium">{c.unidade}</td>
-                  <td className="px-6 py-3 text-muted-foreground">{c.corretor}</td>
-                  <td className="px-6 py-3 text-muted-foreground">{c.ultimo}</td>
-                  <td className="px-6 py-3">
-                    <div className="flex items-center justify-end gap-1">
-                      <button className="size-8 rounded-lg hover:bg-muted grid place-items-center" aria-label="Ligar"><Phone className="size-4 text-muted-foreground" /></button>
-                      <button className="size-8 rounded-lg hover:bg-muted grid place-items-center" aria-label="WhatsApp"><MessageCircle className="size-4 text-muted-foreground" /></button>
+                    <div className="mt-3 flex items-center justify-between">
+                      <span className="text-sm font-bold text-primary">{brl(n.vgv)}</span>
+                      <span className="text-[11px] text-muted-foreground">{n.corretor}</span>
                     </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+                    <div className="mt-2 flex items-center justify-between text-[10px] text-muted-foreground">
+                      <span>{n.origem}</span>
+                      <span>{n.atualizado}</span>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
