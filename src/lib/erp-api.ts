@@ -1,10 +1,8 @@
-// Camada de dados provisória: lê o painel financeiro do Apps Script (que lê a planilha).
-// A busca roda no SERVIDOR (createServerFn) — evita CORS e mantém a URL fora do navegador.
-// Quando o Supabase entrar, trocar o corpo do handler por query no banco.
-import { createServerFn } from "@tanstack/react-start";
+// Leitura provisória do painel financeiro via Apps Script (que lê a planilha).
+// Chamada DIRETA do cliente (GET simples) — sem server function, pra máxima
+// compatibilidade de build. Se o navegador bloquear por CORS, retorna null e a
+// tela cai no estado vazio (sem dados fictícios). Depois isso vem do Supabase.
 
-// URL /exec do Web App do Apps Script. Provisório — mover para variável de ambiente
-// antes de produção, pois expõe o endpoint dos dados financeiros.
 const EXEC_URL =
   "https://script.google.com/macros/s/AKfycby_TK1W-RpA32ysdypZ52QHMrTdSGuWJ9fT0vCIU1XKMx2yY5fUXNXnNt6fPkWTpP77/exec";
 
@@ -47,21 +45,17 @@ export interface PainelInput {
   corretor: string;
 }
 
-// Retorna o painel real, ou null se a planilha/endpoint estiver indisponível
-// (a tela cai no mock nesse caso, sem quebrar).
-export const fetchPainel = createServerFn({ method: "GET" })
-  .inputValidator((d: PainelInput) => d)
-  .handler(async ({ data }): Promise<Painel | null> => {
-    const url =
-      `${EXEC_URL}?action=getPainel` +
-      `&papel=${encodeURIComponent(data.papel)}` +
-      `&corretor=${encodeURIComponent(data.corretor)}`;
-    try {
-      const res = await fetch(url, { redirect: "follow" });
-      if (!res.ok) return null;
-      const json = (await res.json()) as { ok?: boolean; data?: Painel };
-      return json && json.ok && json.data ? json.data : null;
-    } catch {
-      return null;
-    }
-  });
+export async function fetchPainel(input: PainelInput): Promise<Painel | null> {
+  const url =
+    `${EXEC_URL}?action=getPainel` +
+    `&papel=${encodeURIComponent(input.papel)}` +
+    `&corretor=${encodeURIComponent(input.corretor)}`;
+  try {
+    const res = await fetch(url, { redirect: "follow" });
+    if (!res.ok) return null;
+    const json = (await res.json()) as { ok?: boolean; data?: Painel };
+    return json && json.ok && json.data ? json.data : null;
+  } catch {
+    return null;
+  }
+}
