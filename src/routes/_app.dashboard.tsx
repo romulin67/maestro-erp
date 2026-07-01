@@ -16,7 +16,7 @@ import { ArrowUpRight, TrendingUp, Wallet, Briefcase, Users, Activity, Wifi, Wif
 import { PageHeader } from "@/components/app-shell";
 import { useCurrentUser } from "@/lib/session";
 import { fetchPainel, type Painel } from "@/lib/erp-api";
-import { KPIS, CAIXA_TREND, CORRETORES, VENDAS, brl, pct } from "@/lib/mock";
+import { KPIS, brl, pct } from "@/lib/mock";
 
 export const Route = createFileRoute("/_app/dashboard")({
   head: () => ({ meta: [{ title: "Dashboard · ApeCerto" }] }),
@@ -35,22 +35,24 @@ interface VM {
   vendas: { cliente?: string; empreendimento?: string; unidade?: string; vgv?: number; status?: string; corretor?: string }[];
 }
 
-function mockVM(): VM {
+// Sem planilha conectada: NADA de dado fictício — estado vazio.
+// O que aparece na tela é sempre real (da planilha) ou claramente vazio.
+function emptyVM(): VM {
   return {
     live: false,
-    vgvTotal: VENDAS.reduce((s, v) => s + v.vgv, 0),
-    comissao: VENDAS.reduce((s, v) => s + v.apecerto, 0),
-    nVendas: VENDAS.length,
-    saldo: KPIS.saldoCaixa,
-    mensal: CAIXA_TREND.map((c) => ({ mes: c.mes, vgv: c.entrada })),
-    caixaMensal: CAIXA_TREND.map((c) => ({ mes: c.mes, entradas: c.entrada, saidas: c.saida })),
-    ranking: CORRETORES.map((c) => ({ nome: c.nome, vgv: c.vgv })),
-    vendas: VENDAS.map((v) => ({ cliente: v.cliente, empreendimento: v.empreendimento, unidade: v.unidade, vgv: v.vgv, status: v.status, corretor: v.corretor })),
+    vgvTotal: 0,
+    comissao: 0,
+    nVendas: 0,
+    saldo: null,
+    mensal: [],
+    caixaMensal: [],
+    ranking: [],
+    vendas: [],
   };
 }
 
 function buildVM(painel: Painel | null, isCorr: boolean): VM {
-  if (!painel) return mockVM();
+  if (!painel) return emptyVM();
 
   if (isCorr && painel.resumo) {
     return {
@@ -161,9 +163,16 @@ function Dashboard() {
         {vm.live ? (
           <span className="inline-flex items-center gap-1.5 text-success"><Wifi className="size-3.5" /> Planilha conectada</span>
         ) : (
-          <span className="inline-flex items-center gap-1.5 text-muted-foreground"><WifiOff className="size-3.5" /> {loading ? "conectando…" : "dados de exemplo"}</span>
+          <span className="inline-flex items-center gap-1.5 text-muted-foreground"><WifiOff className="size-3.5" /> {loading ? "conectando…" : "sem conexão com a planilha"}</span>
         )}
       </div>
+
+      {!vm.live && !loading && (
+        <div className="rounded-2xl border border-warning/30 bg-warning/10 p-4 text-sm text-foreground/80">
+          <span className="font-semibold">Sem dados da planilha.</span> A dashboard mostra os números reais quando o Apps Script responde.
+          Verifique se a implantação do Web App está com acesso <span className="font-semibold">"Qualquer pessoa"</span> e se as 3 URLs de teste retornam <code className="text-xs">{`{"ok":true`}</code>.
+        </div>
+      )}
 
       {/* KPIs */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -313,7 +322,9 @@ function Dashboard() {
             );
           })}
           {vm.vendas.length === 0 && (
-            <div className="text-sm text-muted-foreground py-6 text-center sm:col-span-2">Nenhuma venda registrada ainda.</div>
+            <div className="text-sm text-muted-foreground py-6 text-center sm:col-span-2">
+              {loading ? "Carregando…" : vm.live ? "Nenhuma venda registrada ainda." : "Conecte a planilha para ver as vendas."}
+            </div>
           )}
         </div>
       </div>
