@@ -1,11 +1,12 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { motion } from "framer-motion";
+import { useCurrentUser, clearUser } from "@/lib/session";
 import {
   LayoutDashboard,
   Wallet,
   Briefcase,
   Building2,
-  Users,
+  Workflow,
   MessagesSquare,
   Search,
   Bell,
@@ -16,15 +17,16 @@ import type { ReactNode } from "react";
 
 const NAV = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { to: "/financeiro", label: "Financeiro", icon: Wallet },
+  { to: "/crm", label: "CRM", icon: Workflow },
   { to: "/negocios", label: "Negócios", icon: Briefcase },
   { to: "/produtos", label: "Produtos", icon: Building2 },
-  { to: "/crm", label: "CRM", icon: Users },
+  { to: "/financeiro", label: "Financeiro", icon: Wallet },
   { to: "/conversas", label: "Conversas", icon: MessagesSquare },
 ] as const;
 
 export function AppShell({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const user = useCurrentUser();
 
   return (
     <div className="min-h-screen w-full flex text-foreground">
@@ -68,12 +70,14 @@ export function AppShell({ children }: { children: ReactNode }) {
 
         <div className="p-4 mx-3 mb-4 rounded-2xl bg-sidebar-accent/60 border border-sidebar-border">
           <div className="flex items-center gap-3">
-            <div className="size-9 rounded-full gradient-brand grid place-items-center text-white text-sm font-bold">RM</div>
+            <div className="size-9 rounded-full gradient-brand grid place-items-center text-white text-sm font-bold">{user.iniciais}</div>
             <div className="min-w-0">
-              <div className="text-sm font-semibold truncate">Rômulo M.</div>
-              <div className="text-xs opacity-60 truncate">Operações · Admin</div>
+              <div className="text-sm font-semibold truncate">{user.nome}</div>
+              <div className="text-xs opacity-60 truncate">
+                {user.papel === "admin" ? "Admin · acesso total" : "Corretor"}
+              </div>
             </div>
-            <Link to="/" className="ml-auto opacity-60 hover:opacity-100" aria-label="Sair">
+            <Link to="/" onClick={() => clearUser()} className="ml-auto opacity-60 hover:opacity-100" aria-label="Sair">
               <LogOut className="size-4" />
             </Link>
           </div>
