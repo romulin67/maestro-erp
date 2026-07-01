@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AppProdutosRouteImport } from './routes/_app.produtos'
 import { Route as AppNegociosRouteImport } from './routes/_app.negocios'
 import { Route as AppFinanceiroRouteImport } from './routes/_app.financeiro'
 import { Route as AppDashboardRouteImport } from './routes/_app.dashboard'
@@ -23,6 +24,11 @@ const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AppProdutosRoute = AppProdutosRouteImport.update({
+  id: '/produtos',
+  path: '/produtos',
+  getParentRoute: () => AppRoute,
 } as any)
 const AppNegociosRoute = AppNegociosRouteImport.update({
   id: '/negocios',
@@ -45,12 +51,14 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AppDashboardRoute
   '/financeiro': typeof AppFinanceiroRoute
   '/negocios': typeof AppNegociosRoute
+  '/produtos': typeof AppProdutosRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/dashboard': typeof AppDashboardRoute
   '/financeiro': typeof AppFinanceiroRoute
   '/negocios': typeof AppNegociosRoute
+  '/produtos': typeof AppProdutosRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -59,12 +67,13 @@ export interface FileRoutesById {
   '/_app/dashboard': typeof AppDashboardRoute
   '/_app/financeiro': typeof AppFinanceiroRoute
   '/_app/negocios': typeof AppNegociosRoute
+  '/_app/produtos': typeof AppProdutosRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/dashboard' | '/financeiro' | '/negocios'
+  fullPaths: '/' | '/dashboard' | '/financeiro' | '/negocios' | '/produtos'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/dashboard' | '/financeiro' | '/negocios'
+  to: '/' | '/dashboard' | '/financeiro' | '/negocios' | '/produtos'
   id:
     | '__root__'
     | '/'
@@ -72,6 +81,7 @@ export interface FileRouteTypes {
     | '/_app/dashboard'
     | '/_app/financeiro'
     | '/_app/negocios'
+    | '/_app/produtos'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -94,6 +104,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_app/produtos': {
+      id: '/_app/produtos'
+      path: '/produtos'
+      fullPath: '/produtos'
+      preLoaderRoute: typeof AppProdutosRouteImport
+      parentRoute: typeof AppRoute
     }
     '/_app/negocios': {
       id: '/_app/negocios'
@@ -123,12 +140,14 @@ interface AppRouteChildren {
   AppDashboardRoute: typeof AppDashboardRoute
   AppFinanceiroRoute: typeof AppFinanceiroRoute
   AppNegociosRoute: typeof AppNegociosRoute
+  AppProdutosRoute: typeof AppProdutosRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
   AppDashboardRoute: AppDashboardRoute,
   AppFinanceiroRoute: AppFinanceiroRoute,
   AppNegociosRoute: AppNegociosRoute,
+  AppProdutosRoute: AppProdutosRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
